@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: 'bitnami/postgresql'
+    environment:
+      - 'POSTGRESQL_USERNAME=docker'
+      - 'POSTGRESQL_PASSWORD=docker'
+      - 'POSTGRESQL_DATABASE=api_expensive'
+    ports:
+      - '6333:5432'
