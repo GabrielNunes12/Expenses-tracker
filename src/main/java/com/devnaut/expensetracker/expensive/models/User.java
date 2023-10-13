@@ -3,6 +3,9 @@ package com.devnaut.expensetracker.expensive.models;
 import com.devnaut.expensetracker.expensive.enums.UserEnum;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -19,5 +22,10 @@ public class User {
   @Enumerated(EnumType.STRING)
   private UserEnum authority;
   private String password;
+  @Column(unique = true)
   private String username;
+  @CreationTimestamp
+  private LocalDateTime createdAt;
+  @CreationTimestamp
+  private LocalDateTime updatedAt;
 }

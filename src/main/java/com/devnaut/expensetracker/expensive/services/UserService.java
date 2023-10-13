@@ -18,7 +18,7 @@ public class UserService {
   public Map isUserLoggedIn(UserDTO userCredentials) {
     Map user = new HashMap<>();
     user.put("username", userCredentials.getUsername());
-    user.put("alreadyCreated", userRepository.findByLogin(userCredentials.getUsername()));
+    user.put("alreadyCreated", userRepository.findByLoginAndPassword(userCredentials.getUsername(), userCredentials.getPassword()));
     return user;
   }
 
