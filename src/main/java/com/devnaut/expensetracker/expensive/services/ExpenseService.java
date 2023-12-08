@@ -4,7 +4,9 @@ import com.devnaut.expensetracker.expensive.dtos.ExpensesDTO;
 import com.devnaut.expensetracker.expensive.enums.CategoryEnum;
 import com.devnaut.expensetracker.expensive.models.Expenses;
 import com.devnaut.expensetracker.expensive.repositories.ExpenseRepository;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,17 +23,17 @@ public class ExpenseService {
   }
   public List<ExpensesDTO> findAllExpenses() {
     List<ExpensesDTO> expensesDTOS = new ArrayList<>();
-    ExpensesDTO expensesDTO = new ExpensesDTO();
     expenseRepository.findAll().forEach(expenses -> {
-      expensesDTO.setDescription(expenses.getDescription());
-      expensesDTO.setValue(expenses.getValue());
-      expensesDTO.setId(expenses.getId());
-      expensesDTO.setType(expenses.getCategoryEnum().getName());
-      expensesDTOS.add(expensesDTO);
+      ExpensesDTO expenseDTO = new ExpensesDTO();
+      expenseDTO.setDescription(expenses.getDescription());
+      expenseDTO.setValue(expenses.getValue());
+      expenseDTO.setId(expenses.getId());
+      expenseDTO.setType(expenses.getCategoryEnum().getName());
+      expensesDTOS.add(expenseDTO);
     });
     return expensesDTOS;
   }
-
+  @Transactional
   public void addExpenses(ExpensesDTO expensesDTO) {
     Expenses expenses = new Expenses();
     expenses.setDescription(expensesDTO.getDescription());
@@ -43,6 +45,7 @@ public class ExpenseService {
     expenseRepository.save(expenses);
   }
 
+  @Transactional
   public String updateExpanse(Long id, ExpensesDTO expensesDTO) {
     Optional<Expenses> expenses = expenseRepository.findById(id);
     if(expenses.isPresent()) {
@@ -53,5 +56,21 @@ public class ExpenseService {
     } else {
       return "ERROR";
     }
+  }
+  /**
+  * @author Gabriel Nunes
+  * @return Se for encontrado a expense, então retorna 1, caso contrário retorna 0
+  * */
+  @SneakyThrows
+  @Transactional
+  public int removeExpense(Long expenseId) {
+    //achou expense
+    Optional<Expenses> foundExpense = expenseRepository.findById(expenseId);
+    if(foundExpense.isPresent()) {
+      //remove
+      expenseRepository.delete(foundExpense.get());
+      return 1;
+    }
+    return 0;
   }
 }

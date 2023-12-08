@@ -2,6 +2,7 @@ package com.devnaut.expensetracker.expensive.controllers;
 
 import com.devnaut.expensetracker.expensive.dtos.ExpensesDTO;
 import com.devnaut.expensetracker.expensive.services.ExpenseService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,11 @@ public class ExpensesController {
   @PostMapping("/editExpense/{id}")
   public ResponseEntity<String> updateExpanse(@PathVariable Long id, @RequestBody ExpensesDTO expensesDTO) {
     return ResponseEntity.ok(expenseService.updateExpanse(id, expensesDTO));
+  }
+
+  @DeleteMapping
+  public ResponseEntity<?> deleteExpense(@PathVariable Long id) {
+    return ResponseEntity.ok().body(expenseService.removeExpense(id) == 0 ? HttpStatus.NOT_FOUND : HttpStatus.ACCEPTED);
   }
 
 }
