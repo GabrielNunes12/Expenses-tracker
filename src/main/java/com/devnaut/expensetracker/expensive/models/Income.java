@@ -18,4 +18,6 @@ public class Income {
   private BigDecimal incomeAmount;
   @Column(length = 50)
   private String description;
+  @OneToOne
+  private User user;
 }

@@ -3,6 +3,7 @@ package com.devnaut.expensetracker.expensive.services;
 import com.devnaut.expensetracker.expensive.dtos.IncomeDTO;
 import com.devnaut.expensetracker.expensive.models.Income;
 import com.devnaut.expensetracker.expensive.repositories.IncomeRepository;
+import com.devnaut.expensetracker.expensive.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -10,15 +11,17 @@ import java.util.Optional;
 
 @Service
 public class IncomeService {
-  private IncomeRepository incomeRepository;
-  public IncomeService(IncomeRepository income) {
+  private final IncomeRepository incomeRepository;
+  private final UserRepository userRepository;
+  public IncomeService(IncomeRepository income, UserRepository userRepository) {
     this.incomeRepository = income;
+    this.userRepository = userRepository;
   }
 
-  public void addIncome(Income income) {
+  public void addIncome(com.devnaut.expensetracker.expensive.utils.Income income) {
     Income newIncome = new Income();
-    newIncome.setIncomeAmount(income.getIncomeAmount());
-    newIncome.setDescription(income.getDescription());
+    newIncome.setIncomeAmount(income.incomeAmount());
+    newIncome.setDescription(income.description());
     incomeRepository.save(newIncome);
   }
   public IncomeDTO updateIncome(Income income) {
@@ -47,5 +50,10 @@ public class IncomeService {
     income.setId(incomeDTO.getId());
     income.setIncomeAmount(incomeDTO.getIncomeAmount());
     return income;
+  }
+
+  public IncomeDTO getExactIncomeFromUser(Long id) {
+    IncomeRepository.IncomeUser userIncome = incomeRepository.findByUserId(id);
+    return new IncomeDTO((Income) userIncome);
   }
 }

@@ -28,4 +28,6 @@ public class User {
   private LocalDateTime createdAt;
   @CreationTimestamp
   private LocalDateTime updatedAt;
+  @OneToOne
+  private Income income;
 }
