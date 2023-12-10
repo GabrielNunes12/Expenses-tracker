@@ -21,9 +21,10 @@ public class ExpenseService {
   public ExpenseService(ExpenseRepository expenseRepository) {
     this.expenseRepository = expenseRepository;
   }
-  public List<ExpensesDTO> findAllExpenses() {
+  public List<ExpensesDTO> findAllExpenses(Long userId) {
     List<ExpensesDTO> expensesDTOS = new ArrayList<>();
-    expenseRepository.findAll().forEach(expenses -> {
+    List<Expenses> expensesFound = expenseRepository.findByUserId(userId);
+    expensesFound.forEach(expenses -> {
       ExpensesDTO expenseDTO = new ExpensesDTO();
       expenseDTO.setDescription(expenses.getDescription());
       expenseDTO.setValue(expenses.getValue());

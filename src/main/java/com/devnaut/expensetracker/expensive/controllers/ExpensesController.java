@@ -18,9 +18,9 @@ public class ExpensesController {
     this.expenseService = expenseService;
   }
 
-  @GetMapping
-  public ResponseEntity<List<ExpensesDTO>> getAllExpenses() {
-    return ResponseEntity.ok(expenseService.findAllExpenses());
+  @GetMapping("/{userId}")
+  public ResponseEntity<List<ExpensesDTO>> getAllExpenses(@PathVariable Long userId) {
+    return ResponseEntity.ok(expenseService.findAllExpenses(userId));
   }
   @PostMapping
   public ResponseEntity<String> addExpanses(@RequestBody ExpensesDTO expensesDTO) {

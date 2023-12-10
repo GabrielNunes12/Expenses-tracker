@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,4 +32,6 @@ public class User {
   private LocalDateTime updatedAt;
   @OneToOne
   private Income income;
+  @OneToMany
+  private List<Expenses> expensesList = new ArrayList<>();
 }

@@ -20,4 +20,6 @@ public class Expenses {
   @Enumerated(EnumType.STRING)
   private CategoryEnum categoryEnum;
   private BigDecimal value;
+  @ManyToOne
+  private User user;
 }
