@@ -11,4 +11,5 @@ import java.util.List;
 public interface ExpenseRepository extends JpaRepository<Expenses, Long> {
   @Query(value = "SELECT * FROM expenses WHERE user_id = ?1", nativeQuery = true)
   List<Expenses> findByUserId(Long id);
+  void deleteById(Long id);
 }
