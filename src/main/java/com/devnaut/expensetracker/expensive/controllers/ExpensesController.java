@@ -2,6 +2,7 @@ package com.devnaut.expensetracker.expensive.controllers;
 
 import com.devnaut.expensetracker.expensive.dtos.ExpensesDTO;
 import com.devnaut.expensetracker.expensive.services.ExpenseService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ public class ExpensesController {
   }
 
   @GetMapping("/{userId}")
+  @Cacheable("expenses")
   public ResponseEntity<List<ExpensesDTO>> getAllExpenses(@PathVariable Long userId) {
     return ResponseEntity.ok(expenseService.findAllExpenses(userId));
   }

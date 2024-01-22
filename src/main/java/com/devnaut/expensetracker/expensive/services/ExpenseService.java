@@ -1,5 +1,6 @@
 package com.devnaut.expensetracker.expensive.services;
 
+import com.devnaut.expensetracker.expensive.config.AppCache;
 import com.devnaut.expensetracker.expensive.dtos.ExpensesDTO;
 import com.devnaut.expensetracker.expensive.enums.CategoryEnum;
 import com.devnaut.expensetracker.expensive.models.Expenses;
@@ -17,9 +18,11 @@ import java.util.Optional;
 public class ExpenseService {
 
   private final ExpenseRepository expenseRepository;
+  private final AppCache appCache;
 
-  public ExpenseService(ExpenseRepository expenseRepository) {
+  public ExpenseService(ExpenseRepository expenseRepository, AppCache appCache) {
     this.expenseRepository = expenseRepository;
+    this.appCache = appCache;
   }
   public List<ExpensesDTO> findAllExpenses(Long userId) {
     List<ExpensesDTO> expensesDTOS = new ArrayList<>();
@@ -32,6 +35,7 @@ public class ExpenseService {
       expenseDTO.setType(expenses.getCategoryEnum().getName());
       expensesDTOS.add(expenseDTO);
     });
+    appCache.cacheManager().getCache("expenses").put("expenses", expensesDTOS);
     return expensesDTOS;
   }
   @Transactional
